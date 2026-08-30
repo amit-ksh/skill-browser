@@ -26,12 +26,12 @@ Status: COMPLETE
 - [x] Markdown sanitizer & renderer (zero arbitrary code execution)
 
 ## SPRINT 3 — Skill Discovery UI
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Explore page `/skills` with live search, category pills, tag filters, sorting
-- [ ] Skill card component with version, category, tags, author, install badge, preview trigger
-- [ ] Skill detail page `/skills/[id]` with full markdown instructions, security/trust provenance, metadata, copyable commands, install action
-- [ ] Empty, loading, and error states with responsive 390px / 768px / 1440px layouts
+- [x] Explore page `/skills` with live search, category pills, tag filters, sorting
+- [x] Skill card component with version, category, tags, author, install badge, preview trigger
+- [x] Skill detail page `/skills/[id]` with full markdown instructions, security/trust provenance, metadata, copyable commands, install action
+- [x] Empty, loading, and error states with responsive 390px / 768px / 1440px layouts
 
 ## SPRINT 4 — Local Skillspace
 Status: NOT STARTED

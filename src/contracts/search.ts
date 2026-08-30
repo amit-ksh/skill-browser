@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CategoryIdSchema } from "./skill";
+import { type CategoryId, CategoryIdSchema } from "./skill";
 
 export const SortOptionSchema = z.enum([
   "relevance",
@@ -8,6 +8,12 @@ export const SortOptionSchema = z.enum([
   "newest",
 ]);
 export type SortOption = z.infer<typeof SortOptionSchema>;
+
+export interface CategoryOption {
+  id: CategoryId | "all";
+  name: string;
+  count?: number;
+}
 
 export const SearchSkillsInputSchema = z.object({
   query: z.string().max(200).default(""),
