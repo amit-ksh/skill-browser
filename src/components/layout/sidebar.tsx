@@ -10,6 +10,7 @@ import {
   PenTool,
   Search,
   TrendingUp,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -76,6 +77,24 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
             Local
           </Badge>
         </Link>
+        <Link
+          href="/simulator"
+          onClick={onClose}
+          className={cn(
+            "flex items-center justify-between px-2.5 py-1.5 text-xs font-medium rounded-[var(--radius-md)] transition-colors",
+            pathname === "/simulator"
+              ? "bg-[var(--surface-elevated)] text-[var(--text)] border border-[var(--border)]"
+              : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-muted)]",
+          )}
+        >
+          <div className="flex items-center gap-2.5">
+            <Zap className="w-4 h-4 text-[var(--accent)]" />
+            <span>Agent Simulator</span>
+          </div>
+          <Badge size="sm" variant="warning" className="text-[9px]">
+            Playground
+          </Badge>
+        </Link>
       </div>
 
       {/* Category Filters */}
@@ -119,7 +138,7 @@ export function Sidebar({ onClose }: { onClose?: () => void }) {
         </p>
         <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-[var(--text-subtle)]">
           <span>navigator.modelContext</span>
-          <span className="text-[var(--success)]">v1 Draft</span>
+          <span className="text-[var(--success)]">v1 Active</span>
         </div>
       </div>
     </aside>
