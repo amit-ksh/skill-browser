@@ -1,4 +1,17 @@
 import { webMcpRegistry } from "./tool-registry";
+import {
+  getSkillMetadataToolDef,
+  getSkillMetadataToolHandler,
+} from "./tools/get-skill-metadata-tool";
+import { getSkillToolDef, getSkillToolHandler } from "./tools/get-skill-tool";
+import {
+  listMySkillsToolDef,
+  listMySkillsToolHandler,
+} from "./tools/list-my-skills-tool";
+import {
+  searchSkillsToolDef,
+  searchSkillsToolHandler,
+} from "./tools/search-skills-tool";
 import type { WebMcpToolDefinition, WebMcpToolHandler } from "./types";
 
 let isInitialized = false;
@@ -6,6 +19,12 @@ let isInitialized = false;
 export function initializeWebMcpTools() {
   if (isInitialized) return;
   isInitialized = true;
+
+  // Register Standard Core Read Tools
+  webMcpRegistry.register(searchSkillsToolDef, searchSkillsToolHandler);
+  webMcpRegistry.register(getSkillMetadataToolDef, getSkillMetadataToolHandler);
+  webMcpRegistry.register(getSkillToolDef, getSkillToolHandler);
+  webMcpRegistry.register(listMySkillsToolDef, listMySkillsToolHandler);
 
   // Listen for agent simulator / extension dispatch events
   if (typeof window !== "undefined") {
@@ -26,6 +45,8 @@ export function initializeWebMcpTools() {
         }),
       );
     });
+
+    window.dispatchEvent(new Event("webmcp-tools-updated"));
   }
 }
 

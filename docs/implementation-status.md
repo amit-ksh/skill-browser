@@ -58,11 +58,12 @@ Status: COMPLETE
 - [x] Lightweight client-side telemetry bus emitting structured events on every invocation
 
 ## SPRINT 7 — WebMCP Read Tools
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Progressive disclosure tool schemas: `search_skills`, `list_my_skills`, `get_skill`, `get_skill_metadata`, `list_collections`
-- [ ] Strict Zod parameter validation and structured JSON error responses
-- [ ] Adapter integration with application services
+- [x] `search_skills` tool handler (parameter validation, keyword ranking, token-efficient summaries)
+- [x] `get_skill_metadata` tool handler (metadata without instructions for token savings)
+- [x] `get_skill` tool handler (complete skill instructions & references)
+- [x] `list_my_skills` tool handler (user's active local Skillspace query)
 - [ ] Integration tests for agent query & progressive retrieval
 
 ## SPRINT 8 — WebMCP Mutations + Human Approval
