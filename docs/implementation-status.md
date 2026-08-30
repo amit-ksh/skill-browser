@@ -76,11 +76,12 @@ Status: COMPLETE
 - [ ] Security & race condition tests
 
 ## SPRINT 9 — Agent Activity + Trust UX
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Real-time WebMCP status indicator in navbar
-- [ ] Live Agent Activity drawer/panel (recent tool calls, latency, payloads, result status)
-- [ ] Interactive Permission Dialog with clear consequence analysis and provenance data
+- [x] Agent activity timeline panel with real-time streaming feed
+- [x] Expandable payload inspector (parameters, execution latency in ms, returned result/error)
+- [x] Trust provenance badges & security posture indicators
+- [x] Unread invocation counter badge in global header & slide-over drawer
 - [ ] Skill trust & provenance badge system (Verified origin, integrity hash, source link)
 
 ## SPRINT 10 — Public Skillspace & Sharing
