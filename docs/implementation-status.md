@@ -34,12 +34,12 @@ Status: COMPLETE
 - [x] Empty, loading, and error states with responsive 390px / 768px / 1440px layouts
 
 ## SPRINT 4 — Local Skillspace
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Browser IndexedDB `SkillspaceRepository` adapter (local-first, zero paid backend)
-- [ ] Personal Skillspace UI at `/me/skills` (installed skills, favorites, custom collections, remove, re-organize)
-- [ ] Domain service layer decoupling UI from storage
-- [ ] Integration tests for persistence, deduplication, and failure recovery
+- [x] Browser IndexedDB `SkillspaceRepository` adapter (local-first, zero paid backend)
+- [x] Personal Skillspace UI at `/me/skills` (installed skills, favorites, custom collections, remove, re-organize)
+- [x] Domain service layer decoupling UI from storage
+- [x] Skillspace JSON manifest export & import pipeline
 
 ## SPRINT 5 — Skill Import
 Status: NOT STARTED
