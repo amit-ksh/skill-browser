@@ -85,11 +85,12 @@ Status: COMPLETE
 - [ ] Skill trust & provenance badge system (Verified origin, integrity hash, source link)
 
 ## SPRINT 10 — Public Skillspace & Sharing
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Shareable Skillspace export & view (`/me/[id]` representation)
-- [ ] Clear UX explaining how browser exposes the local Skillspace to AI agents via WebMCP
-- [ ] Zero server cost / privacy-first architecture
+- [x] Public read-only Skillspace view at `/space/[handle]`
+- [x] Curated public showcase profiles (`@nextjs-architect`, `@agent-engineer`, `@growth-lead`)
+- [x] One-click "Clone Skillspace to Mine" import action with batch IndexedDB synchronization
+- [x] Shareable link generator and WebMCP agent connection metadata guide
 
 ## SPRINT 11 — End-to-End WebMCP Demo & Simulator
 Status: NOT STARTED
