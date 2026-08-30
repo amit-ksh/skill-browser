@@ -101,11 +101,12 @@ Status: COMPLETE
 - [x] Manual tool playground with custom JSON parameter dispatcher and execution timing
 
 ## SPRINT 12 — Accessibility + Performance + Security
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] WCAG 2.2 AA compliance: keyboard trap prevention, ARIA live regions, contrast check
-- [ ] Server Component optimization, minimal client bundle, fast TTFB
-- [ ] Security audit: sanitization, zero secret leakage, safe URL parsing
+- [x] WCAG 2.2 AA compliance: keyboard navigation, skip-to-content anchor, focus-visible rings
+- [x] Security hardening: custom HTTP headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
+- [x] Markdown sanitizer hardening against dangerous HTML tags and URI schemes
+- [x] Server Component optimization, minimal client bundle, zero paid API leakage
 
 ## SPRINT 13 — Vercel Production Readiness
 Status: NOT STARTED

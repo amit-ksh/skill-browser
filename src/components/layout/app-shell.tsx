@@ -14,6 +14,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <WebMcpProvider>
       <ToastProvider>
+        {/* Accessible Skip to Content Link */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-1.5 focus:bg-[var(--accent)] focus:text-[var(--accent-foreground)] focus:rounded-md focus:font-mono focus:text-xs"
+        >
+          Skip to main content
+        </a>
+
         <div className="min-h-screen flex flex-col bg-[var(--background)] text-[var(--text)]">
           {/* Main App Header */}
           <Header
@@ -44,7 +52,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             )}
 
             {/* Main Content Area */}
-            <main className="flex-1 min-w-0 p-4 md:p-8 max-w-7xl mx-auto w-full">
+            <main
+              id="main-content"
+              tabIndex={-1}
+              className="flex-1 min-w-0 p-4 md:p-8 max-w-7xl mx-auto w-full focus:outline-none"
+            >
               {children}
             </main>
           </div>

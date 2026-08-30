@@ -1,18 +1,21 @@
 /**
- * Safe markdown sanitizer and renderer.
+ * Safe markdown sanitizer and parser.
  * Enforces zero arbitrary code execution, strips scripts, iframes, inline event handlers,
- * and escapes dangerous HTML.
+ * and neutralizes dangerous HTML/URIs.
  */
 
 export function sanitizeMarkdown(rawText: string): string {
   if (!rawText) return "";
 
-  // 1. Remove dangerous script and iframe tags completely
+  // 1. Remove dangerous executable and frame tags
   let clean = rawText
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
     .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
     .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, "")
-    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, "");
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, "")
+    .replace(/<form\b[^<]*(?:(?!<\/form>)<[^<]*)*<\/form>/gi, "")
+    .replace(/<base\b[^>]*>/gi, "")
+    .replace(/<meta\b[^>]*>/gi, "");
 
   // 2. Remove inline event handlers (e.g. onclick=, onerror=, onload=)
   clean = clean.replace(/on\w+\s*=\s*(["'][^"']*["']|[^\s>]+)/gi, "");
