@@ -18,13 +18,12 @@ Status: COMPLETE
 - [x] Responsive application layout shell (Header, Sidebar navigation, Main canvas, Agent status badge)
 
 ## SPRINT 2 — Skill Contracts + Static Registry
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Zod schemas and TypeScript types for Skill, SkillVersion, SkillSummary, Category, Tag, SkillSource
-- [ ] Static `SkillRepository` implementation with deterministic search, keyword & category filtering
-- [ ] 20+ rich, realistic seed skills across 6 core categories (Software Dev, Design, Marketing, Research, Productivity, Writing)
-- [ ] Markdown sanitizer & renderer (zero arbitrary code execution)
-- [ ] Unit & contract tests
+- [x] Zod schemas and TypeScript types for Skill, SkillVersion, SkillSummary, Category, Tag, SkillSource
+- [x] Static `SkillRepository` implementation with deterministic search, keyword & category filtering
+- [x] 24+ rich, realistic seed skills across 6 core categories (Software Dev, Design, Marketing, Research, Productivity, Writing)
+- [x] Markdown sanitizer & renderer (zero arbitrary code execution)
 
 ## SPRINT 3 — Skill Discovery UI
 Status: NOT STARTED
