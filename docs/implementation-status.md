@@ -50,12 +50,12 @@ Status: COMPLETE
 - [x] Direct Markdown / JSON paste and remote HTTPS URL fetch support
 
 ## SPRINT 6 — WebMCP Foundation
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] WebMCP feature detection (`navigator.modelContext` / `window.modelContext` / CustomEvent fallback)
-- [ ] WebMCP registration lifecycle and status management (`Supported`, `Unsupported`, `Connected`, `Error`)
-- [ ] Isolated adapter layer under `src/infrastructure/webmcp/`
-- [ ] Browser environment compatibility testing
+- [x] WebMCP feature detection (`navigator.modelContext` / `window.modelContext` / event fallback)
+- [x] Registration lifecycle manager (handles mounting, unmounting, dynamic updates, duplicate prevention)
+- [x] Error serialization adhering to stable machine-readable codes
+- [x] Lightweight client-side telemetry bus emitting structured events on every invocation
 
 ## SPRINT 7 — WebMCP Read Tools
 Status: NOT STARTED

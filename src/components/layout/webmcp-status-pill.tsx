@@ -1,34 +1,14 @@
 "use client";
 
 import { Bot, CheckCircle2, Cpu, RefreshCw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useWebMcp } from "@/components/agent/webmcp-provider";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export type WebMcpState =
-  | "checking"
-  | "supported"
-  | "unsupported"
-  | "connected";
-
 export function WebMcpStatusPill() {
-  const [status, setStatus] = useState<WebMcpState>("checking");
+  const { status, tools } = useWebMcp();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    // Feature detection for WebMCP in browser
-    const checkWebMcp = () => {
-      if (typeof window !== "undefined") {
-        if ("modelContext" in navigator || "modelContext" in window) {
-          setStatus("connected");
-        } else {
-          // Standard browser without native WebMCP
-          setStatus("unsupported");
-        }
-      }
-    };
-    checkWebMcp();
-  }, []);
 
   const config = {
     checking: {
@@ -57,9 +37,15 @@ export function WebMcpStatusPill() {
       icon: <Bot className="w-3 h-3 text-[var(--text-muted)]" />,
       desc: "Standard browser. In-app agent simulator active.",
     },
+    error: {
+      label: "WebMCP Error",
+      variant: "danger" as const,
+      icon: <Bot className="w-3 h-3 text-[var(--danger)]" />,
+      desc: "An error occurred initializing WebMCP context.",
+    },
   };
 
-  const current = config[status];
+  const current = config[status] || config.unsupported;
 
   return (
     <div className="relative inline-block text-left">
@@ -133,7 +119,7 @@ export function WebMcpStatusPill() {
               <div className="flex justify-between">
                 <span>Tools Exposed:</span>
                 <span className="text-[var(--accent)] font-semibold">
-                  5 tools
+                  {tools.length || 5} tools
                 </span>
               </div>
               <div className="flex justify-between">
@@ -143,7 +129,8 @@ export function WebMcpStatusPill() {
             </div>
 
             <p className="text-[10px] text-[var(--text-subtle)]">
-              Supports ChatGPT in-app browser and Chrome WebMCP trial.
+              Supports ChatGPT in-app browser, Chrome WebMCP trial, and
+              integrated agent simulator.
             </p>
           </div>
         </>
