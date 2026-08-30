@@ -1,10 +1,13 @@
 "use client";
 
+import { PlusCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
+import { ImportSkillDialog } from "@/components/skills/import-skill-dialog";
 import { SkillFilterTabs } from "@/components/skills/skill-filter-tabs";
 import { SkillGrid } from "@/components/skills/skill-grid";
 import { SkillSearchBar } from "@/components/skills/skill-search-bar";
+import { Button } from "@/components/ui/button";
 import type {
   CategoryId,
   CategoryOption,
@@ -24,6 +27,7 @@ export function SkillsClient({
   const initialCategoryParam =
     (searchParams.get("category") as CategoryId) || "all";
   const initialQueryParam = searchParams.get("q") || "";
+  const initialImportParam = searchParams.get("import") === "true";
 
   const [query, setQuery] = useState(initialQueryParam);
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | "all">(
@@ -31,6 +35,7 @@ export function SkillsClient({
   );
   const [sortBy, setSortBy] = useState<SortOption>("relevance");
   const [skills, setSkills] = useState<SkillSummary[]>(initialSkills);
+  const [isImportOpen, setIsImportOpen] = useState(initialImportParam);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -55,14 +60,26 @@ export function SkillsClient({
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-[var(--text)]">
-          Skill Registry
-        </h1>
-        <p className="text-xs text-[var(--text-muted)]">
-          Discover verified AI skills and install them into your personal
-          Skillspace for browser-based AI agents.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--text)]">
+            Skill Registry
+          </h1>
+          <p className="text-xs text-[var(--text-muted)]">
+            Discover verified AI skills and install them into your personal
+            Skillspace for browser-based AI agents.
+          </p>
+        </div>
+
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => setIsImportOpen(true)}
+          className="gap-1.5 text-xs self-start sm:self-auto"
+        >
+          <PlusCircle className="w-3.5 h-3.5 text-[var(--accent)]" />
+          <span>Import Custom Skill</span>
+        </Button>
       </div>
 
       {/* Search Bar */}
@@ -98,6 +115,12 @@ export function SkillsClient({
         skills={skills}
         isLoading={isPending}
         onResetFilters={handleResetFilters}
+      />
+
+      {/* Import Modal */}
+      <ImportSkillDialog
+        isOpen={isImportOpen}
+        onClose={() => setIsImportOpen(false)}
       />
     </div>
   );

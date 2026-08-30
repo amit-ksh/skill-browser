@@ -42,12 +42,12 @@ Status: COMPLETE
 - [x] Skillspace JSON manifest export & import pipeline
 
 ## SPRINT 5 — Skill Import
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Skill import pipeline (`URL -> fetch -> validate -> normalize -> sanitize -> preview -> user approval -> install`)
-- [ ] Security guards (HTTPS only, size limits, redirect limits, prompt injection mitigation, zero eval)
-- [ ] Import modal / preview UI with validation report and permission prompt
-- [ ] Unit tests for valid and malformed import scenarios
+- [x] Skill import pipeline (`URL -> fetch -> validate -> normalize -> sanitize -> preview -> user approval -> install`)
+- [x] Security guards (HTTPS only, size limits, redirect limits, prompt injection mitigation, zero eval)
+- [x] Import modal / preview UI with validation report and permission prompt
+- [x] Direct Markdown / JSON paste and remote HTTPS URL fetch support
 
 ## SPRINT 6 — WebMCP Foundation
 Status: NOT STARTED
