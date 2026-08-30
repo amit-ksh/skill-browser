@@ -67,11 +67,12 @@ Status: COMPLETE
 - [ ] Integration tests for agent query & progressive retrieval
 
 ## SPRINT 8 — WebMCP Mutations + Human Approval
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Agent mutation tool: `install_skill`
-- [ ] Human approval workflow: agent requests -> pending approval queue -> user dialog (`Allow` / `Deny`) -> state mutation
-- [ ] Permission policy enforcement (never silent mutation)
+- [x] Security & permission approval model (`ToolPermissionMode`, `PendingApprovalRequest`)
+- [x] Mutating tool handlers: `install_skill`, `create_collection`
+- [x] Real-time approval modal prompting user for confirmation before mutation
+- [x] Time-based token invalidation and denied status signaling
 - [ ] Security & race condition tests
 
 ## SPRINT 9 — Agent Activity + Trust UX

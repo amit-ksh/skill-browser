@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { useState } from "react";
+import { ApprovalDialog } from "@/components/agent/approval-dialog";
 import { WebMcpProvider } from "@/components/agent/webmcp-provider";
 import { ToastProvider } from "@/components/ui/toast";
 import { Header } from "./header";
@@ -48,6 +49,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </main>
           </div>
         </div>
+
+        {/* Global Agent Mutation Approval Modal */}
+        <ApprovalDialog />
       </ToastProvider>
     </WebMcpProvider>
   );

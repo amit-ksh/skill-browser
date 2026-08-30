@@ -1,9 +1,17 @@
 import { webMcpRegistry } from "./tool-registry";
 import {
+  createCollectionToolDef,
+  createCollectionToolHandler,
+} from "./tools/create-collection-tool";
+import {
   getSkillMetadataToolDef,
   getSkillMetadataToolHandler,
 } from "./tools/get-skill-metadata-tool";
 import { getSkillToolDef, getSkillToolHandler } from "./tools/get-skill-tool";
+import {
+  installSkillToolDef,
+  installSkillToolHandler,
+} from "./tools/install-skill-tool";
 import {
   listMySkillsToolDef,
   listMySkillsToolHandler,
@@ -25,6 +33,10 @@ export function initializeWebMcpTools() {
   webMcpRegistry.register(getSkillMetadataToolDef, getSkillMetadataToolHandler);
   webMcpRegistry.register(getSkillToolDef, getSkillToolHandler);
   webMcpRegistry.register(listMySkillsToolDef, listMySkillsToolHandler);
+
+  // Register Core Mutation Tools (Guarded by Human Approval)
+  webMcpRegistry.register(installSkillToolDef, installSkillToolHandler);
+  webMcpRegistry.register(createCollectionToolDef, createCollectionToolHandler);
 
   // Listen for agent simulator / extension dispatch events
   if (typeof window !== "undefined") {
