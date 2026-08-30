@@ -10,12 +10,12 @@ Status: COMPLETE
 - [x] Validate Sprint 0 DoD: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` all green
 
 ## SPRINT 1 — Design System
-Status: NOT STARTED
+Status: COMPLETE
 
-- [ ] Global design tokens (HSL semantic theme, dark/light technical developer aesthetic)
-- [ ] Typography and spacing scale (dense, technical, high-contrast, accessible)
-- [ ] Core UI primitives (`Button`, `Input`, `Badge`, `Card`, `Dialog`, `Dropdown`, `Tabs`, `Tooltip`, `Skeleton`, `Toast`)
-- [ ] Responsive application layout shell (Header, Sidebar navigation, Main canvas, Agent status badge)
+- [x] Global design tokens (HSL semantic theme, dark/light technical developer aesthetic)
+- [x] Typography and spacing scale (dense, technical, high-contrast, accessible)
+- [x] Core UI primitives (`Button`, `Input`, `Badge`, `Card`, `Dialog`, `Dropdown`, `Tabs`, `Tooltip`, `Skeleton`, `Toast`)
+- [x] Responsive application layout shell (Header, Sidebar navigation, Main canvas, Agent status badge)
 
 ## SPRINT 2 — Skill Contracts + Static Registry
 Status: NOT STARTED
