@@ -3,6 +3,8 @@ import { type CategoryId, CategoryIdSchema } from "./skill";
 
 export const SortOptionSchema = z.enum([
   "relevance",
+  "installs",
+  "trending",
   "name-asc",
   "name-desc",
   "newest",
@@ -19,6 +21,8 @@ export const SearchSkillsInputSchema = z.object({
   query: z.string().max(200).default(""),
   category: CategoryIdSchema.or(z.literal("all")).default("all"),
   tag: z.string().max(50).optional(),
+  agent: z.string().max(50).optional(),
+  officialOnly: z.boolean().optional(),
   sortBy: SortOptionSchema.default("relevance"),
   limit: z.number().int().min(1).max(100).default(50),
   offset: z.number().int().min(0).default(0),
