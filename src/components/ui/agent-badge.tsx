@@ -8,7 +8,6 @@ export type AgentPlatform =
   | "Windsurf"
   | "Cline"
   | "Gemini"
-  | "ChatGPT"
   | "WebMCP v1";
 
 export const AGENT_PLATFORMS: {

@@ -11,18 +11,18 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://skillspace.local"),
   title: {
-    default: "Skillspace: Skill library for ChatGPT",
+    default: "Skillspace: Your personal skill space for AI",
     template: "%s | Skillspace",
   },
   description:
-    "Keep reusable skill prompts in one local library that ChatGPT can discover through WebMCP when you ask.",
+    "Give AI the skills it needs to do the job, with a personal skill space powered by WebMCP.",
   keywords: [
     "Skillspace",
     "AI skills",
     "personal skill library",
     "WebMCP",
     "Model Context Protocol",
-    "ChatGPT skills",
+    "AI skills",
   ],
   authors: [{ name: "Skillspace" }],
   creator: "Skillspace",
@@ -31,15 +31,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://skillspace.local",
     siteName: "Skillspace",
-    title: "Skillspace: Skill library for ChatGPT",
+    title: "Skillspace: Your personal skill space for AI",
     description:
-      "Keep reusable skill prompts in one local library that ChatGPT can discover through WebMCP when you ask.",
+      "Give AI the skills it needs to do the job, with a personal skill space powered by WebMCP.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Skillspace: Skill library for ChatGPT",
+    title: "Skillspace: Your personal skill space for AI",
     description:
-      "Keep reusable skill prompts in one local library that ChatGPT can discover through WebMCP when you ask.",
+      "Give AI the skills it needs to do the job, with a personal skill space powered by WebMCP.",
   },
   robots: {
     index: true,

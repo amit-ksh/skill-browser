@@ -1,22 +1,20 @@
 "use client";
 
-import { FileCode, FileUp, Globe, Plus, ShieldAlert } from "lucide-react";
+import { FileCode, FileUp, Plus, ShieldAlert } from "lucide-react";
 import { useRef, useState } from "react";
 import { MarkdownViewer } from "@/components/skills/markdown-viewer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/toast";
 import type { Skill } from "@/contracts";
 import { useSkillspace } from "@/domain/hooks/use-skillspace";
 import {
   previewSkillFromRawText,
-  previewSkillFromUrl,
 } from "@/domain/services/import-skill";
 
-type ImportSource = "url" | "paste" | "file";
+type ImportSource = "paste" | "file";
 
 export function ImportSkillDialog({
   isOpen,
@@ -26,7 +24,6 @@ export function ImportSkillDialog({
   onClose: () => void;
 }) {
   const [activeTab, setActiveTab] = useState<ImportSource>("paste");
-  const [url, setUrl] = useState("");
   const [rawText, setRawText] = useState("");
   const [fileName, setFileName] = useState("");
   const [preview, setPreview] = useState<{
@@ -39,7 +36,6 @@ export function ImportSkillDialog({
   const { success, error, info } = useToast();
 
   const reset = () => {
-    setUrl("");
     setRawText("");
     setFileName("");
     setPreview(null);
@@ -56,17 +52,13 @@ export function ImportSkillDialog({
     setIsLoading(true);
     try {
       const result =
-        activeTab === "url"
-          ? await previewSkillFromUrl(url.trim())
-          : previewSkillFromRawText(rawText);
+        previewSkillFromRawText(rawText);
       setPreview(result);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Could not preview this skill.";
       error(
-        activeTab === "url" && /fetch|network|cors/i.test(message)
-          ? "This source blocks browser imports. Use its raw file URL or paste/upload the skill file."
-          : message,
+        message,
       );
     } finally {
       setIsLoading(false);
@@ -107,8 +99,7 @@ export function ImportSkillDialog({
     }
   };
 
-  const sourceIsReady =
-    activeTab === "url" ? url.trim().length > 0 : rawText.trim().length > 0;
+  const sourceIsReady = rawText.trim().length > 0;
 
   return (
     <Dialog
@@ -168,15 +159,12 @@ export function ImportSkillDialog({
             setPreview(null);
           }}
         >
-          <TabsList className="grid w-full grid-cols-3 bg-[var(--surface-muted)]">
+          <TabsList className="grid w-full grid-cols-2 bg-[var(--surface-muted)]">
             <TabsTrigger value="paste" className="gap-1.5 text-xs">
               <FileCode className="size-3.5" /> Paste
             </TabsTrigger>
             <TabsTrigger value="file" className="gap-1.5 text-xs">
               <FileUp className="size-3.5" /> File
-            </TabsTrigger>
-            <TabsTrigger value="url" className="gap-1.5 text-xs">
-              <Globe className="size-3.5" /> URL
             </TabsTrigger>
           </TabsList>
 
@@ -230,28 +218,6 @@ export function ImportSkillDialog({
             )}
           </TabsContent>
 
-          <TabsContent value="url" className="space-y-2 pt-4">
-            <label
-              htmlFor="import-url"
-              className="text-xs font-medium text-[var(--text-muted)]"
-            >
-              Public HTTPS raw-file URL
-            </label>
-            <Input
-              id="import-url"
-              placeholder="https://raw.githubusercontent.com/.../SKILL.md"
-              value={url}
-              onChange={(event) => {
-                setUrl(event.target.value);
-                setPreview(null);
-              }}
-              className="font-mono text-xs"
-            />
-            <p className="text-xs leading-relaxed text-[var(--text-subtle)]">
-              Some sites block browser reads. When that happens, open the raw
-              file and paste or upload it instead.
-            </p>
-          </TabsContent>
         </Tabs>
 
         {preview && (

@@ -248,7 +248,7 @@ export class UrlSkillImporter {
       updatedAt: new Date().toISOString(),
       instructions: instructionLines.join("\n").trim() || sanitized,
       references: [],
-      compatibility: ["WebMCP v1", "Claude Code", "Cursor", "ChatGPT"],
+      compatibility: ["WebMCP v1", "Claude Code", "Cursor", "AI"],
       license: "Custom",
       integrityHash,
     };

@@ -3,9 +3,9 @@ import { HomeClient } from "@/components/home/home-client";
 import { staticSkillRepository } from "@/infrastructure/repositories/static-skill-repository";
 
 export const metadata: Metadata = {
-  title: "Skill library for ChatGPT",
+  title: "Your personal skill space for AI",
   description:
-    "Keep reusable skill prompts in one local library that ChatGPT can discover through WebMCP when you ask.",
+    "Give AI the skills it needs to do the job, with a personal skill space powered by WebMCP.",
 };
 
 export default async function HomePage() {

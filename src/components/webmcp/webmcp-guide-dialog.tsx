@@ -37,7 +37,7 @@ export function WebMcpGuideDialog({
           </span>
         </div>
       }
-      description="Read-only tools let ChatGPT find a skill and retrieve its prompt when you ask it to."
+      description="Read-only tools let AI find a skill and retrieve its instructions when you ask it to."
       maxWidth="xl"
     >
       <section className="space-y-4" aria-labelledby="registered-tools-heading">

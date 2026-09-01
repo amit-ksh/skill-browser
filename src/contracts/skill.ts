@@ -77,7 +77,7 @@ export const SkillSchema = SkillSummarySchema.extend({
   references: z.array(z.string().url()).max(20).default([]),
   compatibility: z
     .array(z.string())
-    .default(["WebMCP v1", "Claude Code", "Cursor", "ChatGPT"]),
+    .default(["WebMCP v1", "Claude Code", "Cursor", "AI"]),
   license: z.string().default("MIT"),
   integrityHash: z.string().optional(),
 });

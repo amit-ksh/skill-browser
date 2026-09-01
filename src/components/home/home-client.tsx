@@ -112,7 +112,7 @@ export function HomeClient({ initialSkills }: { initialSkills: Skill[] }) {
           id="skill-library-heading"
           className="font-mono text-sm font-bold tracking-wider text-[var(--text)]"
         >
-          Skill library
+          Explore skills
         </h2>
 
         <div className="relative font-mono">

@@ -160,7 +160,7 @@ Guide AI agents to write failing unit tests before touching production code.
 Control headless and interactive browser sessions for real-world automated agent workflows.
     `.trim(),
     references: ["https://github.com/vercel-labs/agent-browser"],
-    compatibility: ["WebMCP v1", "Claude Code", "Cursor", "Codex", "ChatGPT"],
+    compatibility: ["WebMCP v1", "Claude Code", "Cursor", "Codex", "AI"],
     integrityHash: "sha256-a0000000000000000000000000000004",
   },
   {
@@ -236,7 +236,7 @@ You are an expert Next.js developer specializing in the App Router, React 19 Ser
       "https://nextjs.org/docs/app",
       "https://react.dev/reference/rsc/server-components",
     ],
-    compatibility: ["WebMCP v1", "Claude Code", "Cursor", "ChatGPT", "Codex"],
+    compatibility: ["WebMCP v1", "Claude Code", "Cursor", "AI", "Codex"],
     integrityHash: "sha256-a1b2c3d4e5f60718293a4b5c6d7e8f90",
   },
   {
@@ -314,7 +314,7 @@ Specialist for integrating the Web Model Context Protocol (WebMCP) directly in b
     ],
     compatibility: [
       "WebMCP v1",
-      "ChatGPT",
+      "AI",
       "Chrome Origin Trial",
       "Claude Code",
     ],
@@ -496,7 +496,7 @@ Enforces full keyboard accessibility, visible focus indicators, ARIA announcemen
 Analyze developer onboarding conversion rates, value communication, and frictionless activation paths.
     `.trim(),
     references: ["https://www.reforge.com/"],
-    compatibility: ["WebMCP v1", "ChatGPT", "Claude Code"],
+    compatibility: ["WebMCP v1", "AI", "Claude Code"],
     integrityHash: "sha256-4b5c6d7e8f90a1b2c3d4e5f60718293a",
   },
   {
@@ -556,7 +556,7 @@ Ensure perfect social sharing cards, search engine indexability, and clean seman
 Design quantitative evaluation suites for LLM tool invocation, structured output parsing, and failure recovery.
     `.trim(),
     references: ["https://github.com/openai/evals"],
-    compatibility: ["WebMCP v1", "ChatGPT", "Claude Code", "Gemini"],
+    compatibility: ["WebMCP v1", "AI", "Claude Code", "Gemini"],
     integrityHash: "sha256-0a1b2c3d4e5f60718293a4b5c6d7e8f9",
   },
   {
@@ -585,7 +585,7 @@ Design quantitative evaluation suites for LLM tool invocation, structured output
 Rigorous extraction of experimental results, mathematical formulations, and comparative trade-offs.
     `.trim(),
     references: ["https://arxiv.org/"],
-    compatibility: ["WebMCP v1", "ChatGPT", "Claude Code", "Cursor"],
+    compatibility: ["WebMCP v1", "AI", "Claude Code", "Cursor"],
     integrityHash: "sha256-7e8f90a1b2c3d4e5f60718293a4b5c6d",
   },
   {
@@ -655,7 +655,7 @@ Safely investigate complex codebases, mapping architectural boundaries and ident
 Strip redundant logs, compress file listings, and organize input documents to maximize token efficiency.
     `.trim(),
     references: ["https://platform.openai.com/docs/guides/prompt-engineering"],
-    compatibility: ["WebMCP v1", "Claude Code", "Cursor", "ChatGPT", "Cline"],
+    compatibility: ["WebMCP v1", "Claude Code", "Cursor", "AI", "Cline"],
     integrityHash: "sha256-2c3d4e5f60718293a4b5c6d7e8f90a1b",
   },
   {
@@ -690,7 +690,7 @@ Strip redundant logs, compress file listings, and organize input documents to ma
 Drafts rigorous technical specifications with sections for Motivation, Proposed Design, Drawbacks, and Alternatives.
     `.trim(),
     references: ["https://www.ietf.org/standards/rfcs/"],
-    compatibility: ["WebMCP v1", "Claude Code", "Cursor", "ChatGPT"],
+    compatibility: ["WebMCP v1", "Claude Code", "Cursor", "AI"],
     integrityHash: "sha256-5c3d4e5f60718293a4b5c6d7e8f90a1e",
   },
 ];

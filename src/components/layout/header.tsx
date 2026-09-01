@@ -22,7 +22,7 @@ export function Header() {
               Skillspace
             </span>
             <span className="hidden border-l border-[var(--border-strong)] pl-2 font-mono text-[9px] font-semibold tracking-wider text-[var(--text-subtle)] sm:inline-block">
-              SKILL LIBRARY
+              YOUR PERSONAL SKILLSPACE
             </span>
           </div>
         </Link>
@@ -34,7 +34,7 @@ export function Header() {
             className="flex items-center gap-1.5 rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 font-mono text-xs text-[var(--text-muted)] transition-colors hover:border-[var(--border-strong)] hover:bg-[var(--surface-elevated)] hover:text-[var(--text)]"
           >
             <Wrench className="size-3.5 text-[var(--accent)]" />
-            Tools
+            WebMCP tools
           </button>
           <Button
             variant="secondary"

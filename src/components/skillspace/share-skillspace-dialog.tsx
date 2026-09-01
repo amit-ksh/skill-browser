@@ -78,13 +78,12 @@ export function ShareSkillspaceDialog({
         <div className="p-3.5 bg-[var(--surface-muted)] border border-[var(--border)] rounded-[var(--radius-md)] space-y-2.5">
           <div className="flex items-center gap-2 font-semibold text-[var(--text)]">
             <Bot className="w-4 h-4 text-[var(--accent)]" />
-            <span>How to use with AI Agents (ChatGPT / Chrome)</span>
+            <span>How to use with AI agents</span>
           </div>
 
           <ol className="list-decimal pl-4 space-y-1.5 text-[var(--text-muted)] leading-relaxed">
             <li>
-              Open this URL in ChatGPT's in-app browser or a WebMCP-enabled
-              Chrome instance.
+              Open this URL in an AI agent or a WebMCP-enabled browser.
             </li>
             <li>
               The agent automatically discovers your {skillCount} installed

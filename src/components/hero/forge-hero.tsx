@@ -5,15 +5,15 @@ export function ForgeHero() {
     <section className="grid gap-8 border-b border-[var(--border)] pb-10 pt-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(17rem,0.55fr)] lg:items-end lg:pb-12 lg:pt-8">
       <div className="space-y-5">
         <p className="font-mono text-xs font-semibold text-[var(--accent)]">
-          Local-first skills for WebMCP
+          Your personal skills for AI
         </p>
         <div className="space-y-4">
           <h1 className="max-w-3xl text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-[var(--text)] sm:text-5xl lg:text-[3.5rem]">
-            Give ChatGPT the skill for the job.
+            Give AI the skills it needs to do the job.
           </h1>
           <p className="max-w-2xl text-base leading-7 text-[var(--text-muted)]">
-            Keep reusable prompts in one local library. When you ask, ChatGPT
-            can find the right skill and read its instructions through WebMCP.
+            Keep reusable skills in one local space. AI can find the right
+            capability and read its instructions through WebMCP when you need it.
           </p>
         </div>
       </div>
