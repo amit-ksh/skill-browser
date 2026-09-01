@@ -3,9 +3,9 @@ import { HomeClient } from "@/components/home/home-client";
 import { staticSkillRepository } from "@/infrastructure/repositories/static-skill-repository";
 
 export const metadata: Metadata = {
-  title: "Your personal skill space for AI",
+  title: "Give AI the skills to get the job done",
   description:
-    "Give AI the skills it needs to do the job, with a personal skill space powered by WebMCP.",
+    "Browse agent skills, save a personal Skillspace, and make the right instructions available to AI through WebMCP.",
 };
 
 export default async function HomePage() {

@@ -1,19 +1,19 @@
-import { ArrowDown, Braces, Search } from "lucide-react";
+import { Braces, Search } from "lucide-react";
 
 export function ForgeHero() {
   return (
     <section className="grid gap-8 border-b border-[var(--border)] pb-10 pt-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(17rem,0.55fr)] lg:items-end lg:pb-12 lg:pt-8">
       <div className="space-y-5">
         <p className="font-mono text-xs font-semibold text-[var(--accent)]">
-          Your personal skills for AI
+          Your personal Skillspace for AI
         </p>
         <div className="space-y-4">
           <h1 className="max-w-3xl text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-[var(--text)] sm:text-5xl lg:text-[3.5rem]">
-            Give AI the skills it needs to do the job.
+            Give AI the skills to get the job done.
           </h1>
           <p className="max-w-2xl text-base leading-7 text-[var(--text-muted)]">
-            Keep reusable skills in one local space. AI can find the right
-            capability and read its instructions through WebMCP when you need it.
+            Browse trusted skills, save your own set, and let AI use the right
+            instructions when the work calls for them.
           </p>
         </div>
       </div>
@@ -33,10 +33,6 @@ export function ForgeHero() {
               <p className="text-[var(--text)]">get_skill</p>
               <p className="mt-0.5">Read it only when needed</p>
             </div>
-          </div>
-          <div className="flex items-center gap-3 text-[var(--text-subtle)]">
-            <ArrowDown className="size-4" />
-            <p>Browse the library below</p>
           </div>
         </div>
       </div>

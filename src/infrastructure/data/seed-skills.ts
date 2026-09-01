@@ -312,12 +312,7 @@ Specialist for integrating the Web Model Context Protocol (WebMCP) directly in b
       "https://modelcontextprotocol.io",
       "https://github.com/w3c/webmachinelearning",
     ],
-    compatibility: [
-      "WebMCP v1",
-      "AI",
-      "Chrome Origin Trial",
-      "Claude Code",
-    ],
+    compatibility: ["WebMCP v1", "AI", "Chrome Origin Trial", "Claude Code"],
     integrityHash: "sha256-c3d4e5f60718293a4b5c6d7e8f90a1b2",
   },
   {

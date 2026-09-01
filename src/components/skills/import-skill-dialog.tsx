@@ -10,9 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/toast";
 import type { Skill } from "@/contracts";
 import { useSkillspace } from "@/domain/hooks/use-skillspace";
-import {
-  previewSkillFromRawText,
-} from "@/domain/services/import-skill";
+import { previewSkillFromRawText } from "@/domain/services/import-skill";
 
 type ImportSource = "paste" | "file";
 
@@ -51,15 +49,12 @@ export function ImportSkillDialog({
   const handlePreview = async () => {
     setIsLoading(true);
     try {
-      const result =
-        previewSkillFromRawText(rawText);
+      const result = previewSkillFromRawText(rawText);
       setPreview(result);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Could not preview this skill.";
-      error(
-        message,
-      );
+      error(message);
     } finally {
       setIsLoading(false);
     }
@@ -217,7 +212,6 @@ export function ImportSkillDialog({
               </p>
             )}
           </TabsContent>
-
         </Tabs>
 
         {preview && (

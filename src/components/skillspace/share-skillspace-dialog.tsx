@@ -82,9 +82,7 @@ export function ShareSkillspaceDialog({
           </div>
 
           <ol className="list-decimal pl-4 space-y-1.5 text-[var(--text-muted)] leading-relaxed">
-            <li>
-              Open this URL in an AI agent or a WebMCP-enabled browser.
-            </li>
+            <li>Open this URL in an AI agent or a WebMCP-enabled browser.</li>
             <li>
               The agent automatically discovers your {skillCount} installed
               skills via{" "}

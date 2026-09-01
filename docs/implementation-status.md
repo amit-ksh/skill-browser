@@ -121,3 +121,11 @@ Status: COMPLETE
 - [x] Hero landing page explaining WebMCP value proposition in <30 seconds (`/`)
 - [x] Complete documentation: README.md with tool schemas, quickstart, and WebMCP specifications
 - [x] Final end-to-end walkthrough verification (37 routes, strict TypeScript, 0 errors)
+
+## SPRINT 15 — Live Registry Catalog
+Status: COMPLETE
+
+- [x] Replace mock-first discovery with the official skills.sh catalog API
+- [x] Keep Vercel OIDC credentials inside a server-only route handler
+- [x] Support live search, pagination, skill preview, and local installation
+- [x] Preserve an explicit bundled fallback when live registry access is unavailable

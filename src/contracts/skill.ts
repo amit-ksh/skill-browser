@@ -51,6 +51,7 @@ export type VerificationStatus = z.infer<typeof VerificationStatusSchema>;
 
 export const SkillSummarySchema = z.object({
   id: SkillIdSchema,
+  registryId: z.string().min(1).max(240).optional(),
   name: z.string().min(1).max(120),
   description: z.string().max(500),
   version: z.string().default("1.0.0"),

@@ -1,120 +1,139 @@
-# Skill Browser ⚡ WebMCP Skill Registry for AI Agents
+# Skill Browser
 
-> A browser-native AI skill discovery platform and personal Skillspace powered by **WebMCP** (`navigator.modelContext`).
+> A browser-native skill registry and personal Skillspace for AI agents, powered by WebMCP and controlled by the human using it.
 
 [![Next.js 16](https://img.shields.io/badge/Next.js-16.3-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript Strict](https://img.shields.io/badge/TypeScript-Strict-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![WebMCP Standard](https://img.shields.io/badge/WebMCP-v1_Ready-success?style=flat-square)](https://github.com/GoogleChromeLabs/webmcp)
-[![Local-First](https://img.shields.io/badge/Architecture-Local--First_IndexedDB-orange?style=flat-square)]()
-[![Zero Paid Dependencies](https://img.shields.io/badge/Cost-$0_Zero_Paid_APIs-brightgreen?style=flat-square)]()
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Local first](https://img.shields.io/badge/Architecture-Local--first-orange?style=flat-square)](#architecture)
+[![No paid services required](https://img.shields.io/badge/MVP-No_paid_services-brightgreen?style=flat-square)](#product-principles)
 
----
+## Vision
 
-## 🎯 The Problem
+Skill Browser is a place where people can discover, inspect, install, organize, and share reusable instructions for browser-based AI agents. Instead of copying large prompts into every conversation, an agent can discover concise skill metadata through WebMCP and retrieve the complete instructions only when they are relevant.
 
-Browser-based AI agents (such as ChatGPT in-app browser or Chrome WebMCP) need specialized instructions and domain context to perform complex workflows. Today, developers suffer from:
-1. **Context Window Bloat**: Shoveling megabytes of static prompts into agent prompts on every request.
-2. **Silent Mutation Hazards**: Agents modifying user state or tools without explicit human oversight.
-3. **Infrastructure Tax**: Requiring expensive server-side vector databases or paid cloud APIs merely to search skills.
+The product is **agent-first and human-controlled**:
 
----
+- Humans curate the skills available in their personal Skillspace.
+- Agents discover and retrieve those skills through narrow, typed WebMCP tools.
+- The browser is the trust and permission boundary.
+- Skill content is always treated as untrusted data, never executable code.
+- Agent-requested mutations require an explicit, visible user decision.
 
-## 💡 The Solution: Skill Browser
+The long-term goal is an open skill ecosystem that works across browser-based agents without requiring a proprietary runtime, paid AI API, or paid database.
 
-**Skill Browser** is a local-first, zero-paid-backend skill discovery engine and personal Skillspace manager:
+## Product experience
 
-* **Progressive Disclosure**: Agents query lightweight metadata first (`search_skills`, `get_skill_metadata`), downloading full instructions (`get_skill`) only when needed.
-* **Human-in-the-Loop Security Gate**: State mutations (`install_skill`, `create_collection`) are intercepted by a real-time browser approval queue requiring explicit human approval.
-* **Local-First IndexedDB Persistence**: Skills, custom collections, and preferences are persisted directly in the browser with JSON export/import support.
-* **Universal Agent Simulator**: Judge and developer verification playground (`/simulator`) to test WebMCP tools in any standard browser.
+Skill Browser is designed around three short paths:
 
----
+1. **Discover:** search the public registry by name, description, category, or tag, then inspect a skill's source, version, license, and instructions.
+2. **Curate:** add skills to a local Skillspace, organize them into collections, import custom skills, and keep control of what agents can access.
+3. **Use with an agent:** open the Skillspace in a WebMCP-capable browser so an agent can search metadata and retrieve the right skill on demand.
 
-## 🛠️ WebMCP Tool Specifications
+WebMCP support is feature-detected. The application remains usable as a normal skill browser when `navigator.modelContext` is unavailable.
 
-Skill Browser exposes 6 contract-first WebMCP tools via `navigator.modelContext`:
+## Product principles
 
-### 1. Read Tools (Token Efficient)
-| Tool | Description |
-| :--- | :--- |
-| `search_skills` | Deterministic keyword and category search returning compact summaries (~150 tokens). |
-| `get_skill_metadata` | Inspects author, version, compatibility, and integrity hash without prompt bodies. |
-| `get_skill` | Retrieves complete sanitized Markdown instruction manifest and reference links. |
-| `list_my_skills` | Queries user's active local Skillspace and custom collections. |
+- **Progressive disclosure:** return compact metadata first and full instructions only when requested.
+- **Human control:** reads are the default; mutations are visible and approval-gated.
+- **Provenance first:** show where a skill came from before asking a user to trust or install it.
+- **Local first:** keep the anonymous personal Skillspace in IndexedDB behind a repository interface.
+- **Contract first:** validate external input with Zod and derive strict TypeScript types from those schemas.
+- **Deterministic by default:** search and application behavior should not depend on hidden AI calls.
+- **Portable architecture:** domain services do not depend on React, Next.js, WebMCP, or a storage vendor.
 
-### 2. Mutation Tools (Human Approval Guarded)
-| Tool | Description | Permission Policy |
-| :--- | :--- | :--- |
-| `install_skill` | Adds a registry skill to the user's local Skillspace. | 🛡️ **Human Approval Required** |
-| `create_collection` | Creates a new named collection in Skillspace. | 🛡️ **Human Approval Required** |
+## Current WebMCP interface
 
----
+The current browser adapter exposes a deliberately read-only agent surface:
 
-## 🏗️ Architecture & Boundaries
+| Tool | Purpose |
+| --- | --- |
+| `search_skills` | Search the registry and return compact skill summaries. |
+| `get_skill_metadata` | Inspect provenance and compatibility without loading instruction content. |
+| `get_skill` | Retrieve a validated, sanitized skill when the full instructions are needed. |
+| `list_my_skills` | List the skills available in the current local Skillspace. |
+
+The product architecture also supports mutation tools such as `install_skill`, but those belong behind a pending-approval flow: request, explain the consequence, wait for the user to allow or deny it, and only then update local state.
+
+## Architecture
 
 ```mermaid
-graph TD
-    BrowserAgent[Browser AI Agent / ChatGPT / Chrome] -->|WebMCP navigator.modelContext| Registry[WebMCP Tool Registry]
-    Registry --> ReadTools[Read Tools: search, get, list]
-    Registry --> MutationTools[Mutation Tools: install, create]
-    
-    MutationTools --> ApprovalGate{Human Approval Queue}
-    ApprovalGate -->|Approve| AppServices[Domain Application Services]
-    ApprovalGate -->|Deny| ErrorResp[PERMISSION_DENIED Error]
-    
-    ReadTools --> AppServices
-    AppServices --> DomainRepos[Domain Repositories]
-    DomainRepos --> IndexedDB[(Browser IndexedDB)]
-    DomainRepos --> StaticDB[(Static Seed Skills)]
+flowchart LR
+    Human[Human] --> UI[Next.js UI]
+    Agent[Browser agent] -->|WebMCP| Adapter[WebMCP adapter]
+
+    UI --> Services[Application and domain services]
+    Adapter -->|Validate inputs and serialize safe results| Services
+
+    Services --> Registry[SkillRepository]
+    Services --> Skillspace[SkillspaceRepository]
+
+    Registry --> Live[skills.sh catalog]
+    Registry --> Seed[Bundled fallback catalog]
+    Skillspace --> IndexedDB[(IndexedDB)]
 ```
 
-* **Zero Arbitrary Eval**: Imported skills are strictly sanitized markdown (`sanitizeMarkdown`). Script tags, iframes, and dangerous URIs are stripped.
-* **Domain Decoupling**: Application services interact only via domain repository interfaces. Adapters never import UI components.
+The repository is organized around replaceable boundaries:
 
----
+```text
+src/
+├── app/                 Next.js App Router entry points
+├── components/          UI and product components
+├── contracts/           Zod schemas and inferred TypeScript types
+├── domain/              Services, policies, and repository interfaces
+├── infrastructure/      Registry, storage, import, and WebMCP adapters
+├── lib/                 Shared utilities and sanitization
+└── styles/              Semantic design tokens
+```
 
-## 🚀 Quickstart & Local Development
+Both the UI and WebMCP adapter call the same application services. Domain code stays independent of UI and infrastructure, while repository interfaces keep the live catalog, bundled data, IndexedDB, and any future persistence replaceable.
+
+## Trust and security
+
+Skills can contain prompt injection, unsafe links, malformed Markdown, or misleading provenance. Skill Browser therefore follows these constraints:
+
+- Validate all external inputs and manifests at runtime.
+- Sanitize Markdown before rendering or returning it to an agent.
+- Never evaluate skill content or execute arbitrary skill code.
+- Never expose cookies, tokens, secrets, or unrelated local files to skills.
+- Restrict imports to validated public HTTPS sources with size and redirect limits.
+- Return stable, agent-safe error codes without internal stack traces.
+- Require explicit user approval before an agent changes Skillspace state.
+
+## Local development
 
 ### Prerequisites
-* Node.js 20+
-* pnpm (`npm install -g pnpm`)
 
-### Installation
+- Node.js 20 or newer
+- [pnpm](https://pnpm.io/) 10
+
+### Start the app
+
 ```bash
-# Clone the repository
-git clone https://github.com/your-repo/skill-browser.git
-cd skill-browser
-
-# Install dependencies
 pnpm install
-
-# Start local development server
 pnpm dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Quality Assurance & Verification
-```bash
-# Format and lint with Biome
-pnpm lint
+Open [http://localhost:3000](http://localhost:3000).
 
-# Strict TypeScript typechecking
-pnpm typecheck
+### Live skills.sh catalog
 
-# Production build
-pnpm build
-```
+The home page uses the official skills.sh API as its primary catalog. Its Vercel OIDC token remains inside the server-side route handler and is never exposed to the browser.
 
----
+1. Enable OIDC Federation in the Vercel project settings.
+2. Link the local project with `vercel link`.
+3. Run `vercel env pull` to populate `VERCEL_OIDC_TOKEN` in `.env.local`.
 
-## 🎮 How to Test with the Agent Simulator
+Without OIDC, the app falls back to its bundled catalog. Personal skills remain local-first in IndexedDB in either mode.
 
-1. Visit `/simulator` in Skill Browser.
-2. Select **Scenario 1 (Global Skill Discovery)** to watch an agent search skills.
-3. Select **Scenario 4 (Human-Gated State Mutation)** to trigger the real-time permission dialog.
-4. Click **Approve** or **Deny** to observe the agent receiving structured responses in real time.
+## Project documentation
 
----
+- [Product scope](docs/product-scope.md) — MVP boundaries, user flows, permissions, and post-MVP direction.
+- [Architecture](docs/architecture.md) — layers, data flow, contracts, adapters, security, and persistence.
+- [Design system](docs/design-system.md) — visual language, tokens, accessibility, and component rules.
+- [UI/UX specification](docs/ui-ux.md) — screens, interaction patterns, trust UX, and responsive behavior.
+- [Roadmap](docs/roadmap.md) — milestone sequence and definitions of done.
+- [Implementation plan](docs/implementation-plan.md) — stack decisions and delivery order.
 
-## 📄 License
-MIT License. Built for the **WebMCP Challenge 2026**.
+## License
+
+MIT License. Built for the WebMCP Challenge 2026.

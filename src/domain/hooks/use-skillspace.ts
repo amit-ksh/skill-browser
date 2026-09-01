@@ -6,10 +6,12 @@ import { indexedDbSkillspaceRepository } from "@/infrastructure/repositories/ind
 
 export function useSkillspace() {
   const [installedIds, setInstalledIds] = useState<Set<string>>(new Set());
+  const [installedSkills, setInstalledSkills] = useState<Skill[]>([]);
 
   const refresh = useCallback(async () => {
     const items = await indexedDbSkillspaceRepository.listSkills();
     setInstalledIds(new Set(items.map((item) => item.skill.id)));
+    setInstalledSkills(items.map((item) => item.skill));
   }, []);
 
   useEffect(() => {
@@ -58,6 +60,7 @@ export function useSkillspace() {
   );
 
   return {
+    installedSkills,
     isInstalled,
     installSkill,
     removeSkill,

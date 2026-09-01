@@ -5,7 +5,7 @@ import type React from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
-import type { Skill, SkillSummary } from "@/contracts";
+import { type Skill, SkillSchema, type SkillSummary } from "@/contracts";
 import { useSkillspace } from "@/domain/hooks/use-skillspace";
 import { staticSkillRepository } from "@/infrastructure/repositories/static-skill-repository";
 import { SkillDetailDialog } from "./skill-detail-dialog";
@@ -20,17 +20,59 @@ export function SkillRowList({
   onResetFilters?: () => void;
 }) {
   const { isInstalled, installSkill, removeSkill } = useSkillspace();
-  const { success, info } = useToast();
+  const { success, info, error: showError } = useToast();
   const [selectedSkill, setSelectedSkill] = useState<
     Skill | SkillSummary | null
   >(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [hoveredRemoveId, setHoveredRemoveId] = useState<string | null>(null);
+  const [pendingSkillId, setPendingSkillId] = useState<string | null>(null);
+
+  const getFullSkill = async (skillSummary: SkillSummary): Promise<Skill> => {
+    if (skillSummary.registryId) {
+      const params = new URLSearchParams({ id: skillSummary.registryId });
+      const response = await fetch(`/api/skills-sh?${params.toString()}`);
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as {
+          message?: string;
+        } | null;
+        throw new Error(
+          body?.message || "Could not load this skill from skills.sh.",
+        );
+      }
+
+      const parsed = SkillSchema.safeParse(await response.json());
+      if (!parsed.success) {
+        throw new Error("skills.sh returned an invalid skill file.");
+      }
+      return parsed.data;
+    }
+
+    const localSkill = await staticSkillRepository.get(skillSummary.id);
+    return (
+      localSkill ?? {
+        ...skillSummary,
+        instructions: `# ${skillSummary.name}\n\n${skillSummary.description}`,
+        references: [],
+        compatibility: ["WebMCP v1"],
+        license: "MIT",
+      }
+    );
+  };
 
   const openSkill = async (skillSummary: SkillSummary) => {
-    const fullSkill = await staticSkillRepository.get(skillSummary.id);
-    setSelectedSkill(fullSkill ?? skillSummary);
-    setIsDetailOpen(true);
+    setPendingSkillId(skillSummary.id);
+    try {
+      const fullSkill = await getFullSkill(skillSummary);
+      setSelectedSkill(fullSkill);
+      setIsDetailOpen(true);
+    } catch (error) {
+      showError(
+        error instanceof Error ? error.message : "Could not load this skill.",
+      );
+    } finally {
+      setPendingSkillId(null);
+    }
   };
 
   const handlePreview = (event: React.MouseEvent, skill: SkillSummary) => {
@@ -49,16 +91,18 @@ export function SkillRowList({
       return;
     }
 
-    const fullSkill = await staticSkillRepository.get(skillSummary.id);
-    const skillToInstall: Skill = fullSkill ?? {
-      ...skillSummary,
-      instructions: `# ${skillSummary.name}\n\n${skillSummary.description}`,
-      references: [],
-      compatibility: ["WebMCP v1"],
-      license: "MIT",
-    };
-    await installSkill(skillToInstall);
-    success(`Added "${skillSummary.name}" to your Skillspace`);
+    setPendingSkillId(skillSummary.id);
+    try {
+      const skillToInstall = await getFullSkill(skillSummary);
+      await installSkill(skillToInstall);
+      success(`Added "${skillSummary.name}" to your Skillspace`);
+    } catch (error) {
+      showError(
+        error instanceof Error ? error.message : "Could not add this skill.",
+      );
+    } finally {
+      setPendingSkillId(null);
+    }
   };
 
   if (isLoading) {
@@ -121,6 +165,7 @@ export function SkillRowList({
           {skills.map((skill) => {
             const installed = isInstalled(skill.id);
             const isHoveredRemove = hoveredRemoveId === skill.id;
+            const isPending = pendingSkillId === skill.id;
 
             return (
               <div
@@ -151,6 +196,7 @@ export function SkillRowList({
                     variant="ghost"
                     size="sm"
                     onClick={(event) => handlePreview(event, skill)}
+                    disabled={isPending}
                     className="h-7 px-2 text-[var(--text-muted)] hover:text-[var(--accent)]"
                     title={`View ${skill.name} prompt`}
                     aria-label={`View ${skill.name} prompt`}
@@ -167,6 +213,7 @@ export function SkillRowList({
                       }
                       onMouseEnter={() => setHoveredRemoveId(skill.id)}
                       onMouseLeave={() => setHoveredRemoveId(null)}
+                      disabled={isPending}
                       className="h-7 min-w-[6.25rem] px-3 font-mono text-[11px]"
                       title={
                         isHoveredRemove
@@ -197,9 +244,16 @@ export function SkillRowList({
                       }
                       className="h-7 min-w-[6.25rem] border-[var(--border-strong)] bg-[var(--surface-elevated)] px-3 font-mono text-[11px] hover:border-[var(--accent)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)]"
                       title="Add skill to your Skillspace"
+                      disabled={isPending}
                     >
-                      <Plus className="size-3" />
-                      Add
+                      {isPending ? (
+                        "Adding..."
+                      ) : (
+                        <>
+                          <Plus className="size-3" />
+                          Add
+                        </>
+                      )}
                     </Button>
                   )}
                 </div>

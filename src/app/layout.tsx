@@ -11,11 +11,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://skillspace.local"),
   title: {
-    default: "Skillspace: Your personal skill space for AI",
+    default: "Skillspace: Give AI the skills to get the job done",
     template: "%s | Skillspace",
   },
   description:
-    "Give AI the skills it needs to do the job, with a personal skill space powered by WebMCP.",
+    "Browse agent skills, save a personal Skillspace, and make the right instructions available to AI through WebMCP.",
   keywords: [
     "Skillspace",
     "AI skills",
@@ -31,15 +31,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://skillspace.local",
     siteName: "Skillspace",
-    title: "Skillspace: Your personal skill space for AI",
+    title: "Skillspace: Give AI the skills to get the job done",
     description:
-      "Give AI the skills it needs to do the job, with a personal skill space powered by WebMCP.",
+      "Browse agent skills, save a personal Skillspace, and make the right instructions available to AI through WebMCP.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Skillspace: Your personal skill space for AI",
+    title: "Skillspace: Give AI the skills to get the job done",
     description:
-      "Give AI the skills it needs to do the job, with a personal skill space powered by WebMCP.",
+      "Browse agent skills, save a personal Skillspace, and make the right instructions available to AI through WebMCP.",
   },
   robots: {
     index: true,
