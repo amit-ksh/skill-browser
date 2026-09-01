@@ -23,18 +23,18 @@ export function SkillspaceHeader({
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <Badge variant="accent" size="sm">
-              Local-First Skillspace
+              Your local Skillspace
             </Badge>
             <span className="text-[11px] font-mono text-[var(--text-subtle)]">
               IndexedDB Persistent
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--text)]">
-            My Personal Skillspace
+            Your Skillspace
           </h1>
           <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-xl">
-            Skills installed here are directly discoverable and usable by AI
-            agents in your WebMCP browser sessions.
+            The skills you choose here are available to WebMCP-enabled browser
+            agents, subject to your approval for every change.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export function SkillspaceHeader({
       <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center gap-6 text-xs font-mono text-[var(--text-subtle)]">
         <div>
           <span className="text-[var(--text)] font-semibold">{skillCount}</span>{" "}
-          Installed Skills
+          Skills
         </div>
         <div>
           <span className="text-[var(--text)] font-semibold">

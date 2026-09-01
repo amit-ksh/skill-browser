@@ -15,15 +15,6 @@ export const WebMcpGetSkillArgsSchema = z.object({
 });
 export type WebMcpGetSkillArgs = z.infer<typeof WebMcpGetSkillArgsSchema>;
 
-export const WebMcpInstallSkillArgsSchema = z.object({
-  id: SkillIdSchema,
-  sourceUrl: z.string().url().optional(),
-  reason: z.string().max(200).optional(),
-});
-export type WebMcpInstallSkillArgs = z.infer<
-  typeof WebMcpInstallSkillArgsSchema
->;
-
 export const WebMcpToolExecutionResultSchema = z.object({
   success: z.boolean(),
   data: z.unknown().optional(),
@@ -33,7 +24,6 @@ export const WebMcpToolExecutionResultSchema = z.object({
       message: z.string(),
     })
     .optional(),
-  pendingApprovalId: z.string().optional(),
 });
 export type WebMcpToolExecutionResult = z.infer<
   typeof WebMcpToolExecutionResultSchema

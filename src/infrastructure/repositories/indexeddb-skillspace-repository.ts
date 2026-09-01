@@ -152,33 +152,48 @@ export class IndexedDbSkillspaceRepository implements SkillspaceRepository {
       collectionIds: [],
     };
 
-    const current = this.getLocalSkills();
+    const current = await this.listSkills();
     const updated = [...current.filter((i) => i.skill.id !== skill.id), item];
     this.saveLocalSkills(updated);
 
     const db = await this.getDb();
     if (db) {
-      try {
-        const tx = db.transaction(STORE_SKILLS, "readwrite");
-        const store = tx.objectStore(STORE_SKILLS);
-        store.put(item);
-      } catch {}
+      await this.writeSkill(db, "put", item);
     }
   }
 
   async removeSkill(id: SkillId): Promise<void> {
-    const current = this.getLocalSkills();
+    const current = await this.listSkills();
     const updated = current.filter((i) => i.skill.id !== id);
     this.saveLocalSkills(updated);
 
     const db = await this.getDb();
     if (db) {
-      try {
-        const tx = db.transaction(STORE_SKILLS, "readwrite");
-        const store = tx.objectStore(STORE_SKILLS);
-        store.delete(id);
-      } catch {}
+      await this.writeSkill(db, "delete", id);
     }
+  }
+
+  private writeSkill(
+    db: IDBDatabase,
+    operation: "put" | "delete",
+    value: SkillspaceItem | SkillId,
+  ): Promise<void> {
+    return new Promise((resolve) => {
+      try {
+        const transaction = db.transaction(STORE_SKILLS, "readwrite");
+        const store = transaction.objectStore(STORE_SKILLS);
+        if (operation === "put") {
+          store.put(value as SkillspaceItem);
+        } else {
+          store.delete(value as SkillId);
+        }
+        transaction.oncomplete = () => resolve();
+        transaction.onerror = () => resolve();
+        transaction.onabort = () => resolve();
+      } catch {
+        resolve();
+      }
+    });
   }
 
   async toggleFavorite(id: SkillId): Promise<boolean> {

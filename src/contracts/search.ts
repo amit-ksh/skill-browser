@@ -3,8 +3,6 @@ import { type CategoryId, CategoryIdSchema } from "./skill";
 
 export const SortOptionSchema = z.enum([
   "relevance",
-  "installs",
-  "trending",
   "name-asc",
   "name-desc",
   "newest",
@@ -14,7 +12,6 @@ export type SortOption = z.infer<typeof SortOptionSchema>;
 export interface CategoryOption {
   id: CategoryId | "all";
   name: string;
-  count?: number;
 }
 
 export const SearchSkillsInputSchema = z.object({

@@ -55,6 +55,13 @@ export const searchSkillsToolHandler: WebMcpToolHandler = async (params) => {
   return {
     total: result.total,
     returned: result.items.length,
-    skills: result.items,
+    skills: result.items.map((skill) => ({
+      id: skill.id,
+      name: skill.name,
+      description: skill.description,
+      version: skill.version,
+      category: skill.category,
+      tags: skill.tags,
+    })),
   };
 };

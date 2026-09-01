@@ -1,49 +1,54 @@
 :root {
-  /* Color Palette - Developer High Contrast */
-  --background: #000000;
-  --surface: #0a0b0d;
-  --surface-muted: #111317;
-  --surface-elevated: #181b20;
-  --surface-active: #22262d;
-  --surface-hover: rgba(255, 255, 255, 0.04);
+  /* FORGE — Dark Technical Developer Workbench Aesthetic */
+  --background: #08090b;
+  --surface: #0e1014;
+  --surface-muted: #13161c;
+  --surface-elevated: #191d25;
+  --surface-active: #222733;
+  --surface-hover: rgba(245, 158, 11, 0.04);
 
-  --border: #1e2229;
-  --border-strong: #2d333f;
-  --border-subtle: #14171c;
+  --border: #1c2029;
+  --border-strong: #29303d;
+  --border-subtle: #14171e;
 
-  --text: #f0f3f6;
-  --text-muted: #8b949e;
-  --text-subtle: #57606a;
+  --text: #f4f4f6;
+  --text-muted: #8c93a1;
+  --text-subtle: #565d6c;
 
-  /* Restrained Accent */
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-foreground: #ffffff;
-  --accent-subtle: rgba(59, 130, 246, 0.1);
-  --accent-border: rgba(59, 130, 246, 0.25);
+  /* Restrained Forge Amber / Ember Accent */
+  --accent: #f59e0b;
+  --accent-hover: #d97706;
+  --accent-foreground: #000000;
+  --accent-subtle: rgba(245, 158, 11, 0.12);
+  --accent-border: rgba(245, 158, 11, 0.28);
+
+  /* Steel / Technical Secondary Accents */
+  --steel: #94a3b8;
+  --steel-subtle: rgba(148, 163, 184, 0.1);
+  --steel-border: rgba(148, 163, 184, 0.2);
 
   /* Semantic Colors */
   --success: #10b981;
-  --success-foreground: #ffffff;
-  --success-subtle: rgba(16, 185, 129, 0.1);
+  --success-foreground: #000000;
+  --success-subtle: rgba(16, 185, 129, 0.12);
   --success-border: rgba(16, 185, 129, 0.25);
 
   --warning: #f59e0b;
   --warning-foreground: #000000;
-  --warning-subtle: rgba(245, 158, 11, 0.1);
+  --warning-subtle: rgba(245, 158, 11, 0.12);
   --warning-border: rgba(245, 158, 11, 0.25);
 
   --danger: #ef4444;
   --danger-foreground: #ffffff;
-  --danger-subtle: rgba(239, 68, 68, 0.1);
+  --danger-subtle: rgba(239, 68, 68, 0.12);
   --danger-border: rgba(239, 68, 68, 0.25);
 
-  --info: #0ea5e9;
-  --info-foreground: #ffffff;
-  --info-subtle: rgba(14, 165, 233, 0.1);
+  --info: #38bdf8;
+  --info-foreground: #000000;
+  --info-subtle: rgba(56, 189, 248, 0.12);
 
   /* Compact Radius Tokens */
-  --radius-xs: 3px;
+  --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;

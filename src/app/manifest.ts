@@ -2,14 +2,14 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Skill Browser — WebMCP Skill Registry",
-    short_name: "Skill Browser",
+    name: "Skillspace: Your agent skill library",
+    short_name: "Skillspace",
     description:
-      "Discover, curate, and expose AI skills to browser-based AI agents via WebMCP.",
+      "Create a personal library of skills your WebMCP-enabled agents can discover and use.",
     start_url: "/",
     display: "standalone",
-    background_color: "#09090b",
-    theme_color: "#3b82f6",
+    background_color: "#08090b",
+    theme_color: "#f59e0b",
     icons: [
       {
         src: "/favicon.ico",

@@ -2,46 +2,21 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { Skill, SkillId } from "@/contracts";
-
-const STORAGE_KEY = "skill_browser_installed_skills";
+import { indexedDbSkillspaceRepository } from "@/infrastructure/repositories/indexeddb-skillspace-repository";
 
 export function useSkillspace() {
-  const [installedSkills, setInstalledSkills] = useState<Skill[]>([]);
   const [installedIds, setInstalledIds] = useState<Set<string>>(new Set());
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  const loadFromStorage = useCallback(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed: Skill[] = JSON.parse(raw);
-        setInstalledSkills(parsed);
-        setInstalledIds(new Set(parsed.map((s) => s.id)));
-      }
-    } catch {
-      // Fallback
-    } finally {
-      setIsLoaded(true);
-    }
-  }, []);
-
-  const saveToStorage = useCallback((skills: Skill[]) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(skills));
-      setInstalledSkills(skills);
-      setInstalledIds(new Set(skills.map((s) => s.id)));
-      window.dispatchEvent(new Event("skillspace-updated"));
-    } catch {
-      // Storage error
-    }
+  const refresh = useCallback(async () => {
+    const items = await indexedDbSkillspaceRepository.listSkills();
+    setInstalledIds(new Set(items.map((item) => item.skill.id)));
   }, []);
 
   useEffect(() => {
-    loadFromStorage();
+    void refresh();
 
     const handleStorageChange = () => {
-      loadFromStorage();
+      void refresh();
     };
 
     window.addEventListener("skillspace-updated", handleStorageChange);
@@ -50,27 +25,29 @@ export function useSkillspace() {
       window.removeEventListener("skillspace-updated", handleStorageChange);
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, [loadFromStorage]);
+  }, [refresh]);
 
   const installSkill = useCallback(
-    (skill: Skill) => {
-      const exists = installedSkills.some((s) => s.id === skill.id);
-      if (!exists) {
-        const next = [...installedSkills, { ...skill, installed: true }];
-        saveToStorage(next);
-        return true;
-      }
-      return false;
+    async (skill: Skill) => {
+      const exists = installedIds.has(skill.id);
+      if (exists) return false;
+
+      await indexedDbSkillspaceRepository.addSkill({
+        ...skill,
+        installed: true,
+      });
+      await refresh();
+      return true;
     },
-    [installedSkills, saveToStorage],
+    [installedIds, refresh],
   );
 
   const removeSkill = useCallback(
-    (skillId: SkillId) => {
-      const next = installedSkills.filter((s) => s.id !== skillId);
-      saveToStorage(next);
+    async (skillId: SkillId) => {
+      await indexedDbSkillspaceRepository.removeSkill(skillId);
+      await refresh();
     },
-    [installedSkills, saveToStorage],
+    [refresh],
   );
 
   const isInstalled = useCallback(
@@ -81,11 +58,9 @@ export function useSkillspace() {
   );
 
   return {
-    installedSkills,
-    installedCount: installedSkills.length,
     isInstalled,
     installSkill,
     removeSkill,
-    isLoaded,
+    refresh,
   };
 }

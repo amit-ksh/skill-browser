@@ -1,17 +1,9 @@
 import { webMcpRegistry } from "./tool-registry";
 import {
-  createCollectionToolDef,
-  createCollectionToolHandler,
-} from "./tools/create-collection-tool";
-import {
   getSkillMetadataToolDef,
   getSkillMetadataToolHandler,
 } from "./tools/get-skill-metadata-tool";
 import { getSkillToolDef, getSkillToolHandler } from "./tools/get-skill-tool";
-import {
-  installSkillToolDef,
-  installSkillToolHandler,
-} from "./tools/install-skill-tool";
 import {
   listMySkillsToolDef,
   listMySkillsToolHandler,
@@ -28,36 +20,13 @@ export function initializeWebMcpTools() {
   if (isInitialized) return;
   isInitialized = true;
 
-  // Register Standard Core Read Tools
+  // Skillspace exposes a deliberately read-only agent surface.
   webMcpRegistry.register(searchSkillsToolDef, searchSkillsToolHandler);
   webMcpRegistry.register(getSkillMetadataToolDef, getSkillMetadataToolHandler);
   webMcpRegistry.register(getSkillToolDef, getSkillToolHandler);
   webMcpRegistry.register(listMySkillsToolDef, listMySkillsToolHandler);
 
-  // Register Core Mutation Tools (Guarded by Human Approval)
-  webMcpRegistry.register(installSkillToolDef, installSkillToolHandler);
-  webMcpRegistry.register(createCollectionToolDef, createCollectionToolHandler);
-
-  // Listen for agent simulator / extension dispatch events
   if (typeof window !== "undefined") {
-    window.addEventListener("webmcp-agent-call", async (e: Event) => {
-      const customEvent = e as CustomEvent<{
-        toolName: string;
-        params: Record<string, unknown>;
-        callId?: string;
-      }>;
-
-      if (!customEvent.detail) return;
-      const { toolName, params, callId } = customEvent.detail;
-      const response = await webMcpRegistry.execute(toolName, params);
-
-      window.dispatchEvent(
-        new CustomEvent("webmcp-agent-response", {
-          detail: { callId, toolName, response },
-        }),
-      );
-    });
-
     window.dispatchEvent(new Event("webmcp-tools-updated"));
   }
 }

@@ -22,7 +22,7 @@ export function ShareSkillspaceDialog({
   const shareUrl =
     typeof window !== "undefined"
       ? window.location.href
-      : "https://skillbrowser.app/me/skills";
+      : "https://skillspace.local/me/skills";
 
   const handleCopy = async () => {
     try {

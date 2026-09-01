@@ -9,38 +9,37 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://skillbrowser.app"),
+  metadataBase: new URL("https://skillspace.local"),
   title: {
-    default: "Skill Browser — WebMCP Skill Registry for AI Agents",
-    template: "%s | Skill Browser",
+    default: "Skillspace: Skill library for ChatGPT",
+    template: "%s | Skillspace",
   },
   description:
-    "A browser-native skill registry and personal Skillspace exposed through WebMCP for browser-based AI agents. Zero cost, local-first, privacy preserved.",
+    "Keep reusable skill prompts in one local library that ChatGPT can discover through WebMCP when you ask.",
   keywords: [
+    "Skillspace",
+    "AI skills",
+    "personal skill library",
     "WebMCP",
     "Model Context Protocol",
-    "AI Skills",
-    "ChatGPT Browser Agent",
-    "Chrome WebMCP",
-    "Agentic AI",
-    "Skillspace",
+    "ChatGPT skills",
   ],
-  authors: [{ name: "Skill Browser Team" }],
-  creator: "Skill Browser",
+  authors: [{ name: "Skillspace" }],
+  creator: "Skillspace",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://skillbrowser.app",
-    siteName: "Skill Browser",
-    title: "Skill Browser — WebMCP Skill Registry for AI Agents",
+    url: "https://skillspace.local",
+    siteName: "Skillspace",
+    title: "Skillspace: Skill library for ChatGPT",
     description:
-      "A browser-native skill registry and personal Skillspace exposed through WebMCP for browser-based AI agents.",
+      "Keep reusable skill prompts in one local library that ChatGPT can discover through WebMCP when you ask.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Skill Browser — WebMCP Skill Registry for AI Agents",
+    title: "Skillspace: Skill library for ChatGPT",
     description:
-      "A browser-native skill registry and personal Skillspace exposed through WebMCP for browser-based AI agents.",
+      "Keep reusable skill prompts in one local library that ChatGPT can discover through WebMCP when you ask.",
   },
   robots: {
     index: true,

@@ -8,6 +8,17 @@ import { sanitizeMarkdown } from "@/lib/markdown-sanitizer";
 
 const MAX_PAYLOAD_BYTES = 512 * 1024; // 512KB
 
+function toSkillId(value: string): string {
+  return (
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 40) || `imported-skill-${Date.now()}`
+  );
+}
+
 export class UrlSkillImporter {
   validateUrl(urlString: string): { valid: boolean; error?: string } {
     try {
@@ -59,15 +70,59 @@ export class UrlSkillImporter {
       );
     }
 
-    // 1. Try JSON parsing
+    // 1. Try JSON parsing. A hand-authored import only needs the meaningful
+    // fields; storage/provenance defaults are supplied locally.
     try {
-      const json = JSON.parse(rawText);
+      const json = JSON.parse(rawText) as Record<string, unknown>;
+      const name =
+        typeof json.name === "string"
+          ? json.name
+          : typeof json.title === "string"
+            ? json.title
+            : "Imported AI Skill";
+      const instructions =
+        typeof json.instructions === "string"
+          ? json.instructions
+          : typeof json.content === "string"
+            ? json.content
+            : typeof json.prompt === "string"
+              ? json.prompt
+              : "";
       const parsed = SkillSchema.safeParse({
         ...json,
+        id: typeof json.id === "string" ? toSkillId(json.id) : toSkillId(name),
+        name,
+        description:
+          typeof json.description === "string"
+            ? json.description
+            : "Imported custom instructions for browser-based AI agents.",
+        version: typeof json.version === "string" ? json.version : "1.0.0",
+        author:
+          typeof json.author === "string" ? json.author : "External Import",
+        category: typeof json.category === "string" ? json.category : "other",
+        tags: Array.isArray(json.tags)
+          ? json.tags.filter((tag): tag is string => typeof tag === "string")
+          : ["imported"],
+        installs: 0,
+        weeklyInstalls: 0,
+        growthRate: 0,
+        isOfficial: false,
+        updatedAt: new Date().toISOString(),
         sourceType: "imported",
         sourceUrl: sourceUrl || json.sourceUrl || null,
         verificationStatus: "custom",
-        instructions: sanitizeMarkdown(json.instructions || ""),
+        instructions: sanitizeMarkdown(instructions),
+        references: Array.isArray(json.references)
+          ? json.references.filter(
+              (reference): reference is string => typeof reference === "string",
+            )
+          : [],
+        compatibility: Array.isArray(json.compatibility)
+          ? json.compatibility.filter(
+              (item): item is string => typeof item === "string",
+            )
+          : ["WebMCP v1"],
+        license: typeof json.license === "string" ? json.license : "Custom",
       });
 
       if (parsed.success) {
@@ -165,13 +220,7 @@ export class UrlSkillImporter {
       }
     }
 
-    const id =
-      title
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "-")
-        .replace(/-+/g, "-")
-        .replace(/^-|-$/g, "")
-        .slice(0, 40) || `imported-skill-${Date.now()}`;
+    const id = toSkillId(title);
 
     // Simple deterministic hash
     let hashNum = 0;

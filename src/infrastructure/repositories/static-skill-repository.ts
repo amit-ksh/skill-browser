@@ -103,8 +103,6 @@ export class StaticSkillRepository implements SkillRepository {
         if (scoreB !== scoreA) return scoreB - scoreA;
       }
 
-      if (sortBy === "installs") return b.installs - a.installs;
-      if (sortBy === "trending") return b.weeklyInstalls - a.weeklyInstalls;
       if (sortBy === "name-asc") return a.name.localeCompare(b.name);
       if (sortBy === "name-desc") return b.name.localeCompare(a.name);
       if (sortBy === "newest")
@@ -112,8 +110,7 @@ export class StaticSkillRepository implements SkillRepository {
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
         );
 
-      // Default to highest installs
-      return b.installs - a.installs;
+      return a.name.localeCompare(b.name);
     });
 
     const total = filtered.length;

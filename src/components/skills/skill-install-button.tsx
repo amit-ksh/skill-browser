@@ -35,8 +35,8 @@ export function SkillInstallButton({
 
     if (installed) {
       if (showRemoveOption) {
-        removeSkill(skill.id);
-        info(`Removed "${skill.name}" from Skillspace`);
+        void removeSkill(skill.id);
+        info(`Removed "${skill.name}" from your Skillspace`);
       }
     } else {
       // Build skill payload if only summary is passed
@@ -52,8 +52,8 @@ export function SkillInstallButton({
               license: "MIT",
             });
 
-      installSkill(skillToInstall);
-      success(`Added "${skill.name}" to Skillspace`);
+      void installSkill(skillToInstall);
+      success(`Added "${skill.name}" to your Skillspace`);
     }
   };
 
@@ -86,7 +86,7 @@ export function SkillInstallButton({
         {...props}
       >
         <Check className="w-3.5 h-3.5 text-[var(--success)]" />
-        <span>Installed</span>
+        <span>In Skillspace</span>
       </Button>
     );
   }
@@ -100,7 +100,7 @@ export function SkillInstallButton({
       {...props}
     >
       <Plus className="w-3.5 h-3.5" />
-      <span>Install</span>
+      <span>Add</span>
     </Button>
   );
 }

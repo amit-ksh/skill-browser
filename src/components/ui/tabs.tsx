@@ -77,7 +77,7 @@ export function TabsTrigger({
       type="button"
       onClick={() => context.setActiveTab(value)}
       className={cn(
-        "px-3 py-1 text-xs font-medium rounded-[var(--radius-sm)] transition-all duration-150 select-none",
+        "inline-flex flex-row items-center justify-center gap-1.5 whitespace-nowrap px-3 py-1.5 text-xs font-medium rounded-[var(--radius-sm)] transition-all duration-150 select-none cursor-pointer",
         isActive
           ? "bg-[var(--surface-elevated)] text-[var(--text)] shadow-xs border border-[var(--border-strong)]"
           : "text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-muted)]",
