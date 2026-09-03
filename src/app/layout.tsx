@@ -60,7 +60,7 @@ export default function RootLayout({
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>
-        {process.env.NODE_ENV === "development" ? <DevWebMcpTools /> : null}
+        <DevWebMcpTools />
       </body>
     </html>
   );

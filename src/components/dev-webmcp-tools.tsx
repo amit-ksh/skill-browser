@@ -14,7 +14,7 @@ declare global {
 }
 
 const DEVTOOLS_SCRIPT_URL =
-  "https://cdn.jsdelivr.net/gh/amit-ksh/dev-webmcp@v0.2.0/dist/webmcp-devtools.min.js";
+  "https://cdn.jsdelivr.net/gh/amit-ksh/dev-webmcp@v0.2.1/dist/webmcp-devtools.min.js";
 
 export function DevWebMcpTools() {
   useEffect(() => {
