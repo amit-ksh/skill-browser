@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { DevWebMcpTools } from "@/components/dev-webmcp-tools";
 import { AppShell } from "@/components/layout/app-shell";
 import { Providers } from "./providers";
 
@@ -59,6 +60,7 @@ export default function RootLayout({
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>
+        {process.env.NODE_ENV === "development" ? <DevWebMcpTools /> : null}
       </body>
     </html>
   );
