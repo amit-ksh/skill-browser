@@ -1,22 +1,37 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo } from "react";
 import type { Skill, SkillId } from "@/contracts";
 import { indexedDbSkillspaceRepository } from "@/infrastructure/repositories/indexeddb-skillspace-repository";
 
+export const skillspaceQueries = {
+  all: ["skillspace"] as const,
+  skills: ["skillspace", "skills"] as const,
+};
+
 export function useSkillspace() {
-  const [installedIds, setInstalledIds] = useState<Set<string>>(new Set());
-  const [installedSkills, setInstalledSkills] = useState<Skill[]>([]);
+  const queryClient = useQueryClient();
+  const skillsQuery = useQuery({
+    queryKey: skillspaceQueries.skills,
+    queryFn: () => indexedDbSkillspaceRepository.listSkills(),
+    staleTime: Number.POSITIVE_INFINITY,
+  });
+  const items = skillsQuery.data ?? [];
+  const installedIds = useMemo(
+    () => new Set(items.map((item) => item.skill.id)),
+    [items],
+  );
+  const installedSkills = useMemo(
+    () => items.map((item) => item.skill),
+    [items],
+  );
 
   const refresh = useCallback(async () => {
-    const items = await indexedDbSkillspaceRepository.listSkills();
-    setInstalledIds(new Set(items.map((item) => item.skill.id)));
-    setInstalledSkills(items.map((item) => item.skill));
-  }, []);
+    await queryClient.invalidateQueries({ queryKey: skillspaceQueries.skills });
+  }, [queryClient]);
 
   useEffect(() => {
-    void refresh();
-
     const handleStorageChange = () => {
       void refresh();
     };
@@ -29,27 +44,38 @@ export function useSkillspace() {
     };
   }, [refresh]);
 
-  const installSkill = useCallback(
-    async (skill: Skill) => {
-      const exists = installedIds.has(skill.id);
-      if (exists) return false;
-
+  const installMutation = useMutation({
+    mutationFn: async (skill: Skill) => {
+      const existing = await indexedDbSkillspaceRepository.getSkill(skill.id);
+      if (existing) return false;
       await indexedDbSkillspaceRepository.addSkill({
         ...skill,
         installed: true,
       });
-      await refresh();
       return true;
     },
-    [installedIds, refresh],
+    onSuccess: async () => {
+      await refresh();
+    },
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: async (skillId: SkillId) => {
+      await indexedDbSkillspaceRepository.removeSkill(skillId);
+    },
+    onSuccess: async () => {
+      await refresh();
+    },
+  });
+
+  const installSkill = useCallback(
+    (skill: Skill) => installMutation.mutateAsync(skill),
+    [installMutation.mutateAsync],
   );
 
   const removeSkill = useCallback(
-    async (skillId: SkillId) => {
-      await indexedDbSkillspaceRepository.removeSkill(skillId);
-      await refresh();
-    },
-    [refresh],
+    (skillId: SkillId) => removeMutation.mutateAsync(skillId),
+    [removeMutation.mutateAsync],
   );
 
   const isInstalled = useCallback(
@@ -65,5 +91,7 @@ export function useSkillspace() {
     installSkill,
     removeSkill,
     refresh,
+    isLoading: skillsQuery.isPending,
+    isMutating: installMutation.isPending || removeMutation.isPending,
   };
 }

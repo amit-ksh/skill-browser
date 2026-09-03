@@ -1,13 +1,14 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { Check, Eye, Plus, SearchX, Trash2 } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
-import { type Skill, SkillSchema, type SkillSummary } from "@/contracts";
+import type { Skill, SkillSummary } from "@/contracts";
+import { skillQueries } from "@/domain/hooks/skill-queries";
 import { useSkillspace } from "@/domain/hooks/use-skillspace";
-import { staticSkillRepository } from "@/infrastructure/repositories/static-skill-repository";
 import { SkillDetailDialog } from "./skill-detail-dialog";
 
 export function SkillRowList({
@@ -20,6 +21,7 @@ export function SkillRowList({
   onResetFilters?: () => void;
 }) {
   const { isInstalled, installSkill, removeSkill } = useSkillspace();
+  const queryClient = useQueryClient();
   const { success, info, error: showError } = useToast();
   const [selectedSkill, setSelectedSkill] = useState<
     Skill | SkillSummary | null
@@ -28,37 +30,8 @@ export function SkillRowList({
   const [hoveredRemoveId, setHoveredRemoveId] = useState<string | null>(null);
   const [pendingSkillId, setPendingSkillId] = useState<string | null>(null);
 
-  const getFullSkill = async (skillSummary: SkillSummary): Promise<Skill> => {
-    if (skillSummary.registryId) {
-      const params = new URLSearchParams({ id: skillSummary.registryId });
-      const response = await fetch(`/api/skills-sh?${params.toString()}`);
-      if (!response.ok) {
-        const body = (await response.json().catch(() => null)) as {
-          message?: string;
-        } | null;
-        throw new Error(
-          body?.message || "Could not load this skill from skills.sh.",
-        );
-      }
-
-      const parsed = SkillSchema.safeParse(await response.json());
-      if (!parsed.success) {
-        throw new Error("skills.sh returned an invalid skill file.");
-      }
-      return parsed.data;
-    }
-
-    const localSkill = await staticSkillRepository.get(skillSummary.id);
-    return (
-      localSkill ?? {
-        ...skillSummary,
-        instructions: `# ${skillSummary.name}\n\n${skillSummary.description}`,
-        references: [],
-        compatibility: ["WebMCP v1"],
-        license: "MIT",
-      }
-    );
-  };
+  const getFullSkill = (skillSummary: SkillSummary) =>
+    queryClient.fetchQuery(skillQueries.detail(skillSummary));
 
   const openSkill = async (skillSummary: SkillSummary) => {
     setPendingSkillId(skillSummary.id);

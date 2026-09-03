@@ -13,11 +13,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ForgeHero } from "@/components/hero/forge-hero";
 import { SkillRowList } from "@/components/skills/skill-row-list";
 import { Button } from "@/components/ui/button";
-import {
-  type Skill,
-  SkillCatalogResponseSchema,
-  type SkillSummary,
-} from "@/contracts";
+import type { Skill, SkillSummary } from "@/contracts";
+import { useSkillCatalog } from "@/domain/hooks/use-skill-catalog";
 import { useSkillspace } from "@/domain/hooks/use-skillspace";
 
 const CATALOG_PAGE_SIZE = 30;
@@ -53,21 +50,35 @@ const SKILLSPACE_CATEGORIES = [
   { id: "writing", label: "WRITING", matchKeys: ["writing", "docs", "specs"] },
 ];
 
-type CatalogStatus = "loading" | "live" | "fallback";
-
 export function HomeClient({ initialSkills }: { initialSkills: Skill[] }) {
   const { installedSkills } = useSkillspace();
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filterMode, setFilterMode] = useState<"all" | "installed">("all");
-  const [catalogSkills, setCatalogSkills] =
-    useState<SkillSummary[]>(initialSkills);
-  const [catalogStatus, setCatalogStatus] = useState<CatalogStatus>("loading");
-  const [catalogMessage, setCatalogMessage] = useState("");
   const [catalogPage, setCatalogPage] = useState(0);
-  const [catalogTotal, setCatalogTotal] = useState(initialSkills.length);
-  const [catalogHasMore, setCatalogHasMore] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const catalogQuery = useSkillCatalog({
+    page: catalogPage,
+    perPage: CATALOG_PAGE_SIZE,
+    query,
+    enabled: filterMode === "all",
+  });
+  const catalogStatus = catalogQuery.isError
+    ? "fallback"
+    : catalogQuery.isFetching || catalogQuery.isDebouncing
+      ? "loading"
+      : "live";
+  const catalogSkills = catalogQuery.isError
+    ? initialSkills
+    : (catalogQuery.data?.items ?? initialSkills);
+  const catalogTotal = catalogQuery.isError
+    ? initialSkills.length
+    : (catalogQuery.data?.total ?? initialSkills.length);
+  const catalogHasMore = catalogQuery.isError
+    ? false
+    : (catalogQuery.data?.hasMore ?? false);
+  const catalogMessage =
+    catalogQuery.error instanceof Error ? catalogQuery.error.message : "";
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -83,64 +94,6 @@ export function HomeClient({ initialSkills }: { initialSkills: Skill[] }) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  useEffect(() => {
-    if (filterMode === "installed") return;
-
-    const controller = new AbortController();
-    const cleanQuery = query.trim();
-    const delay = cleanQuery.length >= 2 ? 250 : 0;
-
-    setCatalogStatus("loading");
-    const timeoutId = window.setTimeout(async () => {
-      try {
-        const params = new URLSearchParams({
-          page: String(catalogPage),
-          perPage: String(CATALOG_PAGE_SIZE),
-        });
-        if (cleanQuery.length >= 2) params.set("q", cleanQuery);
-
-        const response = await fetch(`/api/skills-sh?${params.toString()}`, {
-          signal: controller.signal,
-        });
-        if (!response.ok) {
-          const body = (await response.json().catch(() => null)) as {
-            message?: string;
-          } | null;
-          throw new Error(body?.message || "The live catalog is unavailable.");
-        }
-
-        const parsed = SkillCatalogResponseSchema.safeParse(
-          await response.json(),
-        );
-        if (!parsed.success) {
-          throw new Error("The live catalog returned an invalid response.");
-        }
-
-        setCatalogSkills(parsed.data.items);
-        setCatalogTotal(parsed.data.total);
-        setCatalogHasMore(parsed.data.hasMore);
-        setCatalogMessage("");
-        setCatalogStatus("live");
-      } catch (error) {
-        if (controller.signal.aborted) return;
-        setCatalogSkills(initialSkills);
-        setCatalogTotal(initialSkills.length);
-        setCatalogHasMore(false);
-        setCatalogMessage(
-          error instanceof Error
-            ? error.message
-            : "The live catalog is unavailable.",
-        );
-        setCatalogStatus("fallback");
-      }
-    }, delay);
-
-    return () => {
-      controller.abort();
-      window.clearTimeout(timeoutId);
-    };
-  }, [catalogPage, filterMode, initialSkills, query]);
 
   const filteredSkills: SkillSummary[] = useMemo(() => {
     let result: SkillSummary[] =
