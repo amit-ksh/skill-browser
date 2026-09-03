@@ -4,31 +4,38 @@ import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   initializeWebMcpTools,
+  type WebMcpRegistrationStatus,
   type WebMcpToolDefinition,
   webMcpRegistry,
 } from "@/infrastructure/webmcp";
 
 interface WebMcpContextType {
   tools: WebMcpToolDefinition[];
+  registrationStatus: WebMcpRegistrationStatus;
 }
 
 const WebMcpContext = createContext<WebMcpContextType | undefined>(undefined);
 
 export function WebMcpProvider({ children }: { children: React.ReactNode }) {
   const [tools, setTools] = useState<WebMcpToolDefinition[]>([]);
+  const [registrationStatus, setRegistrationStatus] =
+    useState<WebMcpRegistrationStatus>({ state: "idle" });
 
   useEffect(() => {
-    initializeWebMcpTools();
-    setTools(webMcpRegistry.listTools());
+    const sync = () => {
+      setTools(webMcpRegistry.listTools());
+      setRegistrationStatus(webMcpRegistry.getStatus());
+    };
 
-    const handleToolsUpdated = () => setTools(webMcpRegistry.listTools());
-    window.addEventListener("webmcp-tools-updated", handleToolsUpdated);
-    return () =>
-      window.removeEventListener("webmcp-tools-updated", handleToolsUpdated);
+    void initializeWebMcpTools().finally(sync);
+    sync();
+
+    window.addEventListener("webmcp-tools-updated", sync);
+    return () => window.removeEventListener("webmcp-tools-updated", sync);
   }, []);
 
   return (
-    <WebMcpContext.Provider value={{ tools }}>
+    <WebMcpContext.Provider value={{ tools, registrationStatus }}>
       {children}
     </WebMcpContext.Provider>
   );

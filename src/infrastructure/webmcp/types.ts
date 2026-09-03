@@ -15,17 +15,19 @@ export type WebMcpToolHandler = (
   params: Record<string, unknown>,
 ) => Promise<unknown>;
 
+export interface RegisteredWebMcpTool extends WebMcpToolDefinition {
+  execute: WebMcpToolHandler;
+}
+
 export interface ModelContextAPI {
-  registerTool(tool: WebMcpToolDefinition, handler: WebMcpToolHandler): void;
-  unregisterTool?(name: string): void;
-  listTools?(): WebMcpToolDefinition[];
+  registerTool(tool: RegisteredWebMcpTool): Promise<void>;
 }
 
 declare global {
-  interface Navigator {
+  interface Document {
     modelContext?: ModelContextAPI;
   }
-  interface Window {
+  interface Navigator {
     modelContext?: ModelContextAPI;
   }
 }

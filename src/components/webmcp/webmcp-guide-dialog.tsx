@@ -14,7 +14,7 @@ export function WebMcpGuideDialog({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const { tools } = useWebMcp();
+  const { tools, registrationStatus } = useWebMcp();
   const { success } = useToast();
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -50,6 +50,16 @@ export function WebMcpGuideDialog({
             Registered tools
           </h3>
         </div>
+
+        <p className="rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--background)] px-3 py-2 font-mono text-[11px] text-[var(--text-muted)]">
+          Native registration: {registrationStatus.state}
+          {registrationStatus.state === "registered"
+            ? ` (${registrationStatus.toolCount} tools)`
+            : ""}
+          {registrationStatus.state === "failed"
+            ? ` — ${registrationStatus.message}`
+            : ""}
+        </p>
 
         <div className="max-h-[58vh] space-y-2 overflow-y-auto pr-1">
           {tools.map((tool) => {
